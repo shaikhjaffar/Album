@@ -3,7 +3,7 @@ import { useEffect, useState } from "react";
 import { Albumservice } from "../Api";
 import Card from "react-bootstrap/Card";
 import Button from "react-bootstrap/Button";
-import { FormLabel} from "react-bootstrap";
+import { FormLabel } from "react-bootstrap";
 import Modal from "react-bootstrap/Modal";
 import Swal from "sweetalert2";
 function Allalbum() {
@@ -17,7 +17,7 @@ function Allalbum() {
   const handleClose1 = () => setShow1(false);
   const handleShow1 = () => setShow1(true);
   const [id, setid] = useState(0);
-  const[data,setdata] = useState({})
+  const [data, setdata] = useState({});
 
   function Delete() {
     Swal.fire({
@@ -41,39 +41,34 @@ function Allalbum() {
       handleClose();
     });
   }
- 
 
-
-  function UpdateAlbum(){
-  Albumservice.UpdateAlbum(id,JSON.stringify({
-    title : data
-  }))
-  .then((res)=>{
-    if(res.status !== 200){
+  function UpdateAlbum() {
+    Albumservice.UpdateAlbum(
+      id,
+      JSON.stringify({
+        title: data,
+      })
+    ).then((res) => {
+      if (res.status !== 200) {
+        Swal.fire({
+          position: "center",
+          icon: "Error",
+          title: "Something went wrong try again later",
+          showConfirmButton: false,
+          timer: 1500,
+        });
+        handleClose1();
+      }
       Swal.fire({
         position: "center",
-        icon: "Error",
-        title: "Something went wrong try again later",
+        icon: "success",
+        title: "Album Updated Sucessfully",
         showConfirmButton: false,
         timer: 1500,
       });
       handleClose1();
-    }
-    Swal.fire({
-      position: "center",
-      icon: "success",
-      title: "Album Updated Sucessfully",
-      showConfirmButton: false,
-      timer: 1500,
     });
-    handleClose1();
-    
-
-  })
   }
-
-
-
 
   useEffect(() => {
     Albumservice.getAllAlbum()
@@ -99,10 +94,13 @@ function Allalbum() {
           </Modal.Header>
           <Modal.Body>
             {" "}
-            <Button variant="secondary" onClick={()=>{
-               handleClose()
-               handleShow1()
-            }}>
+            <Button
+              variant="secondary"
+              onClick={() => {
+                handleClose();
+                handleShow1();
+              }}
+            >
               Update
             </Button>
             <Button
@@ -116,35 +114,34 @@ function Allalbum() {
           </Modal.Body>
         </Modal>
 
-
         <Modal show={show1} onHide={handleClose1}>
-        <Modal.Header closeButton>
-          <Modal.Title>Update the Album of having ID:{id}</Modal.Title>
-        </Modal.Header>
-        <Modal.Body>
-          <FormLabel>Enter The Title of the Album</FormLabel>
-          <input
-            type="text"
-            onChange={(e) => {
-              setdata(e.target.value);
-            }}
-          />
-        </Modal.Body>
-        <Modal.Footer>
-          <Button variant="secondary" onClick={handleClose1}>
-            Close
-          </Button>
-          <Button
-            variant="primary"
-            onClick={() => {
-              UpdateAlbum()
-            }}
-          >
-            Save Changes
-          </Button>
-        </Modal.Footer>
-      </Modal>
-        
+          <Modal.Header closeButton>
+            <Modal.Title>Update the Album of having ID:{id}</Modal.Title>
+          </Modal.Header>
+          <Modal.Body>
+            <FormLabel>Enter The Title of the Album</FormLabel>
+            <input
+              type="text"
+              onChange={(e) => {
+                setdata(e.target.value);
+              }}
+            />
+          </Modal.Body>
+          <Modal.Footer>
+            <Button variant="secondary" onClick={handleClose1}>
+              Close
+            </Button>
+            <Button
+              variant="primary"
+              onClick={() => {
+                UpdateAlbum();
+              }}
+            >
+              Save Changes
+            </Button>
+          </Modal.Footer>
+        </Modal>
+
         {allalbum.map((item) => (
           <div className="card1" key={item.id}>
             <Card
@@ -152,11 +149,9 @@ function Allalbum() {
                 setid(item.id);
                 handleShow();
               }}
-              
             >
               {item.title}
             </Card>
-
           </div>
         ))}
       </>

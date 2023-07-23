@@ -5,7 +5,7 @@ import Allalbum from "./components/AllAlbum";
 import Button from "react-bootstrap/Button";
 import Modal from "react-bootstrap/Modal";
 import Swal from "sweetalert2";
-import { FormLabel, InputGroup } from "react-bootstrap";
+import { FormLabel } from "react-bootstrap";
 
 export default function App() {
   const [show, setShow] = useState(false);
